@@ -3,7 +3,7 @@
 ;; Copyright (C) 2013 Yagnesh Raghava Yakkala <http://yagnesh.org>
 
 ;; Author: Yagnesh Raghava Yakkala <hi@yagnesh.org>
-;; URL: https://github.com/yyr/ncl-mode
+;; URL: https://github.com/yyr/namelist-mode
 ;; Maintainer: Yagnesh Raghava Yakkala <hi@yagnesh.org>
 ;; Version: 0.1-dev
 ;; Created: Thursday, January 24 2013
@@ -53,7 +53,7 @@
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-m") 'reindent-then-newline-and-indent)
 
-    "Key map for ncl mode."))
+    "Key map for namelist mode."))
 
 ;;;###autoload
 (define-derived-mode namelist-mode prog-mode "namelist"
