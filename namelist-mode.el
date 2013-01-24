@@ -68,7 +68,7 @@
   )
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist (cons (purecopy "namelist") 'namelist-mode))
-
+(add-to-list 'auto-mode-alist
+             '("\\.namelist" . 'namelist-mode))
 
 ;;; namelist-mode.el ends here
