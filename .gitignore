@@ -1,0 +1,5 @@
+*.elc
+*.html
+*.bkp
+*.new
+tmp*
