@@ -72,7 +72,8 @@
 ;;; define mode
 (defvar namelist-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-m") 'reindent-then-newline-and-indent))
+    (define-key map (kbd "C-m") 'reindent-then-newline-and-indent)
+    map)
 
   "Key map for namelist mode.")
 
