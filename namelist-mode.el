@@ -48,12 +48,33 @@
 ;;; navigation.
 
 
+;;; font lock
+(defvar namelist-group-begin-re "^[[:blank:]]*&.*$"
+  "regex to match beginning of namelist Group.")
+
+(defvar namelist-group-end-re
+  "\\(?:&end\\|/\\)"
+  "regex to end  of namelist Group.")
+
+(defvar namelist-keys-re
+  (concat
+   "^[ \t]*"                            ;initial optional space
+   "\\([a-zA-Z0-9_]*\\)\\(?:(.*)\\).*="                   ; keys
+   )
+  "Regexp for matching variable.")
+
+(defconst namelist-font-lock-keywords
+  (list `(,(concat "\\<" namelist-group-begin-re "\\|" namelist-group-end-re
+                  "\\>") (1 font-lock-builtin-face))
+
+        `(,(concat "\\<" namelist-keys-re "\\>") (1 font-lock-keyword-face))))
+
 ;;; define mode
 (defvar namelist-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-m") 'reindent-then-newline-and-indent)
+    (define-key map (kbd "C-m") 'reindent-then-newline-and-indent))
 
-    "Key map for namelist mode."))
+  "Key map for namelist mode.")
 
 ;;;###autoload
 (define-derived-mode namelist-mode prog-mode "namelist"
@@ -65,7 +86,9 @@
   (setq indent-tabs-mode nil)
   (set (make-local-variable 'imenu-generic-expression)
        namelist-imenu-generic-expression)
-  )
+  (set (make-local-variable 'font-lock-defaults)
+       'namelist-font-lock-keywords))
+
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist
