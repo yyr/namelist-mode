@@ -27,13 +27,14 @@
 ;;; Commentary:
 ;; Major mode to edit F90 namelist files.
 
+;;; Code:
 ;;;###autoload
 (defgroup namelist nil
   "Major mode to edit Fortran namelist files."
   :group 'languages)
 
 (defcustom namelist-mode-hook nil
-  "Hook that runs right after enabling namelist-mode."
+  "Hook that runs right after enabling `namelist-mode'."
   :type 'hook
   :group 'namelist)
 
@@ -43,18 +44,18 @@
   :type 'string
   :group 'namelist)
 
-;;; indention.
+;;; Indention.
 
-;;; navigation.
+;;; Navigation.
 
 
-;;; font lock
+;;; Font lock.
 (defvar namelist-group-begin-re "^[[:blank:]]*&\\(.*\)) *$"
-  "regex to match beginning of namelist Group.")
+  "Regex to match beginning of namelist Group.")
 
 (defvar namelist-group-end-re
   "\\(?:&end\\|/\\)"
-  "regex to end  of namelist Group.")
+  "Regex to end  of namelist Group.")
 
 (defvar namelist-keys-re
   (concat
@@ -71,7 +72,7 @@
 
   "Font lock keyword regular expressions for namelist mode.")
 
-;;; define mode
+;;; Major mode.
 (defvar namelist-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-m") 'reindent-then-newline-and-indent)
@@ -79,7 +80,6 @@
 
   "Key map for namelist mode.")
 
-;;; Major mode.
 (defvar namelist-mode-syntax-table
   (let ((table (make-syntax-table)))
     (modify-syntax-entry ?\r " "  table) ; return is white space
