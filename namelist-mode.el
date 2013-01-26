@@ -49,7 +49,7 @@
 
 
 ;;; font lock
-(defvar namelist-group-begin-re "^[[:blank:]]*&.*$"
+(defvar namelist-group-begin-re "^[[:blank:]]*&\\(.*\)) *$"
   "regex to match beginning of namelist Group.")
 
 (defvar namelist-group-end-re
@@ -59,15 +59,17 @@
 (defvar namelist-keys-re
   (concat
    "^[ \t]*"                            ;initial optional space
-   "\\([a-zA-Z0-9_]*\\)\\(?:(.*)\\).*="                   ; keys
+   "\\([a-zA-Z0-9_]*\\).*="                   ; keys
    )
   "Regexp for matching variable.")
 
 (defconst namelist-font-lock-keywords
-  (list `(,(concat "\\<" namelist-group-begin-re "\\|" namelist-group-end-re
-                  "\\>") (1 font-lock-builtin-face))
+  (list
+   (cons namelist-group-begin-re '(1 font-lock-builtin-face))
+   (cons namelist-group-end-re '(1 font-lock-builtin-face))
+   (cons namelist-keys-re '(1 font-lock-keyword-face)))
 
-        `(,(concat "\\<" namelist-keys-re "\\>") (1 font-lock-keyword-face))))
+  "Font lock keyword regular expressions for namelist mode.")
 
 ;;; define mode
 (defvar namelist-mode-map
