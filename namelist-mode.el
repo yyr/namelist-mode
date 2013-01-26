@@ -90,7 +90,7 @@
   (set (make-local-variable 'imenu-generic-expression)
        namelist-imenu-generic-expression)
   (set (make-local-variable 'font-lock-defaults)
-       'namelist-font-lock-keywords))
+       '(namelist-font-lock-keywords)))
 
 
 ;;;###autoload
