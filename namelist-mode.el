@@ -26,6 +26,18 @@
 
 ;;; Commentary:
 ;; Major mode to edit F90 namelist files.
+;;
+;; Example namelist file looks like the following.
+;;______________________________________
+;; &group1
+;;   key1 = value1, value2
+;;   key2 = value1
+;;   ...
+;; $end
+;; &group2
+;;   ...
+;; $end
+;;______________________________________
 
 ;;; Code:
 ;;;###autoload
