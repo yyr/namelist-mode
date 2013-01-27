@@ -112,7 +112,7 @@ different character is used."
         indent)
     (back-to-indentation)
     (if (looking-at namelist-comment-char)
-        (setq indent (namelist-comment-indent))
+        (setq indent (namelist-indent-comment))
       (setq indent (namelist-calculate-indent)))
     (or (= indent (current-column))
         (progn
