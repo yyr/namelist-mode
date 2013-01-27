@@ -50,26 +50,35 @@
 
 
 ;;; Font lock.
-(defvar namelist-group-begin-re "^[[:blank:]]*&\\(.*\)) *$"
+(defcustom namelist-builtin-keywords
+  '(".true." ".false.")
+  "Namelist allowed inbuilt keywords."
+  :group 'namelist)
+
+(defvar namelist-group-begin-re "^[[:blank:]]*&\\(.*\\) *$"
   "Regex to match beginning of namelist Group.")
 
 (defvar namelist-group-end-re
-  "\\(?:&end\\|/\\)"
+  (regexp-opt '("$end" "/") 'paren)
   "Regex to end  of namelist Group.")
 
-(defvar namelist-keys-re
+(defvar namelist-key-re                 ; key = value
   (concat
-   "^[ \t]*"                            ;initial optional space
-   "\\([a-zA-Z0-9_]*\\).*="                   ; keys
+   "^[ \t]*"
+   "\\([a-zA-Z0-9_]*\\)"                ; var
+   "[ \t]*="                            ; space=
+   ;; \\[:blank:\\]
+   ;; "[\\(.*\\),]+"
    )
   "Regexp for matching variable.")
 
 (defconst namelist-font-lock-keywords
   (list
+   (cons (regexp-opt namelist-builtin-keywords 'paren) '(1 font-lock-builtin-face))
    (cons namelist-group-begin-re '(1 font-lock-builtin-face))
+   (cons namelist-key-re '(1 font-lock-keyword-face))
    (cons namelist-group-end-re '(1 font-lock-builtin-face))
-   (cons namelist-keys-re '(1 font-lock-keyword-face)))
-
+   )
   "Font lock keyword regular expressions for namelist mode.")
 
 ;;; Major mode.
