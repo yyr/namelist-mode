@@ -57,6 +57,70 @@
   :group 'namelist)
 
 ;;; Indention.
+(defcustom namelist-indent-offset 2
+  "Namelist indentation of a block."
+  :type 'integer
+  :group 'namelist)
+
+(defcustom namelist-comment-char "!"
+  "Comment character. Its generally `!'. But occasionally
+different character is used."
+  :type 'character
+  :group 'namelist)
+
+(defsubst namelist-point-in-group-p ()
+  "Check and return `t' if the point is in a group i.e, in between
+&group ... $end."
+  (let ((ep (save-excursion
+              (re-search-backward namelist-group-end-re nil t)))
+        (bp (save-excursion
+              (re-search-backward namelist-group-begin-re nil t))))
+    (cond ((and ep bp
+                (> ep bp))
+           nil)
+          ((and ep bp
+                (< ep bp))
+           t)
+          (bp
+           (if bp t nil)))))
+
+(defun namelist-indent-comment ()
+  "Returns indentation level for comments. If comment is inside a
+  group return value is `namelist-indent-offset'. If the comment
+  is outside of any group return value is 0."
+  (if (namelist-point-in-group-p)
+      namelist-indent-offset
+    0))
+
+(defun namelist-calculate-indent ()
+  "Calculate indent for current column."
+  (save-excursion
+    (back-to-indentation)
+    (cond ((or (looking-at namelist-group-end-re)
+               (looking-at namelist-group-end-re))
+           0)
+          ((namelist-point-in-group-p)
+           namelist-indent-offset)
+          (t
+           0))))
+
+
+(defun namelist-indent-line ()
+  "Indent current line."
+  (interactive "*")
+  (let ((pos (point-marker))
+        indent)
+    (back-to-indentation)
+    (if (looking-at namelist-comment-char)
+        (setq indent (namelist-comment-indent))
+      (setq indent (namelist-calculate-indent)))
+    (or (= indent (current-column))
+        (progn
+          (back-to-indentation)
+          (delete-horizontal-space)
+          (indent-to indent)))
+    (and (< (point) pos)
+         (goto-char pos))))
 
 ;;; Navigation.
 
@@ -71,7 +135,7 @@
   "Regex to match beginning of namelist Group.")
 
 (defvar namelist-group-end-re
-  (regexp-opt '("$end" "/") 'paren)
+  (regexp-opt '("$end" "$END" "/") 'paren)
   "Regex to end  of namelist Group.")
 
 (defvar namelist-key-re                 ; key = value
@@ -135,8 +199,8 @@
   "Major mode for editing f90 namelist files.
 
 \\{namelist-mode-map}"
-
-  (set (make-local-variable 'comment-start) "!")
+  (set (make-local-variable 'indent-line-function) 'namelist-indent-line)
+  (set (make-local-variable 'comment-start) namelist-comment-char)
   (setq indent-tabs-mode nil)
   (set (make-local-variable 'imenu-generic-expression)
        namelist-imenu-generic-expression)
