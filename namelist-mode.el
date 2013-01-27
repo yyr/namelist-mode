@@ -5,7 +5,7 @@
 ;; Author: Yagnesh Raghava Yakkala <hi@yagnesh.org>
 ;; URL: https://github.com/yyr/namelist-mode
 ;; Maintainer: Yagnesh Raghava Yakkala <hi@yagnesh.org>
-;; Version: 0.1-dev
+;; Version: 0.2
 ;; Created: Thursday, January 24 2013
 ;; Keywords: namelist, Major Mode, namelist-mode, Fortran
 
