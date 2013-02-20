@@ -212,4 +212,5 @@ different character is used."
 (add-to-list 'auto-mode-alist
              '("\\.namelist" . 'namelist-mode))
 
+(provide 'namelist-mode)
 ;;; namelist-mode.el ends here
