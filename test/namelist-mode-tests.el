@@ -29,8 +29,12 @@ The whitespace before and including \"|\" on each line is removed."
 
 
 ;;; indentation
-(ert-deftest namelist-test-file-beginning ()
-  (namelist-should-indent "   &group" 0))
+(ert-deftest namelist-test-group-begin ()
+  (namelist-should-indent "   &group" 0)
+  (namelist-should-indent "    &group\n  /" 0))
 
+(ert-deftest namelist-test-group-end ()
+  (namelist-should-indent "   /" 0)
+  (namelist-should-indent "     /" 0))
 
 ;;; namelist-mode-tests.el ends here
