@@ -28,7 +28,7 @@
 ;;; run
 (if noninteractive
     (progn
-      (princ emacs-version)
+      (message "\n\nRunning tests with EMACS: %s\n" emacs-version)
       (ert-run-tests-batch-and-exit))
   (ert t))
 
