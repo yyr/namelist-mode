@@ -122,6 +122,69 @@ different character is used."
     (and (< (point) pos)
          (goto-char pos))))
 
+;;; SMIE
+(require 'smie)
+
+(defconst namelist-use-smie nil
+  "Whether to use SMIE for indentation.")
+
+(defvar namelist-keywords-regexp
+  (regexp-opt '("," "/"))
+  "For SMIE.")
+
+(defconst namelist-smie-tokens
+  '(("BEGIN" . "&")
+    ("END" . '("/" "$END"))
+    ("OP" .  "=")))
+
+(defvar namelist-smie-grammer
+  (smie-prec2->grammar
+   (smie-bnf->prec2
+    '((id)
+      (inst ("BEGIN" exp "END")
+            (exp))
+      (exp (id "," id)
+           (id "=" exp)))
+    '((assoc ","))))
+  "SMIE grammar for namelist mode.")
+
+(defun namelist-smie-rules (kind token)
+  (case kind
+    (:after
+     (cond
+      ((equal token ",") (smie-rule-separator kind))
+      ((equal token "BEGIN") namelist-indent-offset)))
+    (:before
+     (cond
+      ((equal token ",") (smie-rule-separator kind))
+      ))
+    (:elem
+     (cond
+      ((equal "BEGIN") '(column . 0))
+      ((equal "END") '(column . 0))))))
+
+(defun namelist-smie-forward-token ()
+  (forward-comment (point-max))
+  (cond
+   ((looking-at namelist-keywords-regexp)
+    (goto-char (match-end 0))
+    (match-string-no-properties 0))
+   (t (buffer-substring-no-properties
+       (point)
+       (progn (skip-syntax-forward "w_")
+              (point))))))
+
+(defun namelist-smie-backward-token ()
+  (forward-comment (- (point)))
+  (cond
+   ((looking-back namelist-keywords-regexp (- (point) 2) t)
+    (goto-char (match-beginning 0))
+    (match-string-no-properties 0))
+   (t (buffer-substring-no-properties
+       (point)
+       (progn (skip-syntax-backward "w_")
+              (point))))))
+
 ;;; Navigation.
 
 
@@ -134,8 +197,7 @@ different character is used."
 (defvar namelist-group-begin-re "^[[:blank:]]*&\\(.*\\) *$"
   "Regex to match beginning of namelist Group.")
 
-(defvar namelist-group-end-re
-  (regexp-opt '("$end" "$END" "/") 'paren)
+(defvar namelist-group-end-re (regexp-opt '("$end" "$END" "/") 'paren)
   "Regex to end  of namelist Group.")
 
 (defvar namelist-key-re                 ; key = value
@@ -199,13 +261,18 @@ different character is used."
   "Major mode for editing f90 namelist files.
 
 \\{namelist-mode-map}"
-  (set (make-local-variable 'indent-line-function) 'namelist-indent-line)
+  ;; (set (make-local-variable 'indent-line-function) 'namelist-indent-line)
+  (set (make-local-variable 'indent-line-function) 'smie-indent-line)
   (set (make-local-variable 'comment-start) namelist-comment-char)
   (setq indent-tabs-mode nil)
   (set (make-local-variable 'imenu-generic-expression)
        namelist-imenu-generic-expression)
   (set (make-local-variable 'font-lock-defaults)
-       '(namelist-font-lock-keywords)))
+       '(namelist-font-lock-keywords))
+  (smie-setup namelist-smie-grammer
+              #'namelist-smie-rules
+              :forward-token #'namelist-smie-forward-token
+              :backward-token #'namelist-smie-backward-token))
 
 
 ;;;###autoload
