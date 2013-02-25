@@ -137,7 +137,7 @@ different character is used."
     ("END" . '("/" "$END"))
     ("OP" .  "=")))
 
-(defvar namelist-smie-grammer
+(defvar namelist-smie-grammar
   (smie-prec2->grammar
    (smie-bnf->prec2
     '((id)
@@ -269,7 +269,7 @@ different character is used."
        namelist-imenu-generic-expression)
   (set (make-local-variable 'font-lock-defaults)
        '(namelist-font-lock-keywords))
-  (smie-setup namelist-smie-grammer
+  (smie-setup namelist-smie-grammar
               #'namelist-smie-rules
               :forward-token #'namelist-smie-forward-token
               :backward-token #'namelist-smie-backward-token))
