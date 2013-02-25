@@ -160,8 +160,8 @@ different character is used."
       ))
     (:elem
      (cond
-      ((equal "BEGIN") '(column . 0))
-      ((equal "END") '(column . 0))))))
+      ((equal token "BEGIN") '(column . 0))
+      ((equal token "END") '(column . 0))))))
 
 (defun namelist-smie-forward-token ()
   (forward-comment (point-max))
