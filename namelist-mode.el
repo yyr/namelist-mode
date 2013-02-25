@@ -277,7 +277,7 @@ different character is used."
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist
-             '("\\.namelist" . 'namelist-mode))
+             '("\\.namelist\\'" . 'namelist-mode))
 
 (provide 'namelist-mode)
 ;;; namelist-mode.el ends here
