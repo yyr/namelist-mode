@@ -4,3 +4,5 @@
 *.new
 tmp*
 .yas-compiled-snippets.el
+
+/.cask/
