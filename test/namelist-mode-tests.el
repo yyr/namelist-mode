@@ -37,4 +37,9 @@ The whitespace before and including \"|\" on each line is removed."
   (namelist-should-indent "   /" 0)
   (namelist-should-indent "     /" 0))
 
+(ert-deftest namelist-indent-black ()
+  (namelist-should-indent-buffer "  &group\nfoo = bar\n \n  /"
+                                 "&group\n  foo = bar\n/"))
+
+
 ;;; namelist-mode-tests.el ends here
