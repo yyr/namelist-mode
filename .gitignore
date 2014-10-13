@@ -3,3 +3,4 @@
 *.bkp
 *.new
 tmp*
+.yas-compiled-snippets.el
