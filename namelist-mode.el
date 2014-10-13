@@ -1,4 +1,4 @@
-;;; namelist-mode.el -- Major Mode for editing f90 namelist files.
+;;; namelist-mode.el --- Major Mode for editing f90 namelist files.
 
 ;; Copyright (C) 2013 Yagnesh Raghava Yakkala <http://yagnesh.org>
 
