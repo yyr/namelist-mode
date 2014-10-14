@@ -10,4 +10,4 @@ before_install:
 env:
   - EMACS=emacs-snapshot
 script:
-  ${EMACS} -batch -Q -l test/run-test.el
+  # ${EMACS} -batch -Q -l test/run-test.el

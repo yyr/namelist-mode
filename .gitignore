@@ -1,8 +1,6 @@
 *.elc
-*.html
-*.bkp
-*.new
-tmp*
-.yas-compiled-snippets.el
 
+# Cask
 /.cask/
+
+.yas-compiled-snippets.el

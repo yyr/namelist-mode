@@ -41,5 +41,4 @@ The whitespace before and including \"|\" on each line is removed."
   (namelist-should-indent-buffer "  &group\nfoo = bar\n \n  /"
                                  "&group\n  foo = bar\n/"))
 
-
 ;;; namelist-mode-tests.el ends here
